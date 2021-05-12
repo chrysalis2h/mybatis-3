@@ -1,23 +1,25 @@
 /**
- *    Copyright 2009-2020 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2009-2020 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.logging;
 
 import java.lang.reflect.Constructor;
 
 /**
+ * 日志工厂方法
+ *
  * @author Clinton Begin
  * @author Eduardo Macarron
  */
@@ -30,6 +32,9 @@ public final class LogFactory {
 
   private static Constructor<? extends Log> logConstructor;
 
+  /**
+   * syschronized 加锁，从上往下加载
+   */
   static {
     tryImplementation(LogFactory::useSlf4jLogging);
     tryImplementation(LogFactory::useCommonsLogging);
@@ -39,14 +44,38 @@ public final class LogFactory {
     tryImplementation(LogFactory::useNoLogging);
   }
 
+  /**
+   * @param null
+   * @Description: 禁用构造方法方式来创建实例
+   * @Date: 2021/4/26 22:17
+   * @Author: HJ
+   * @Return
+   * @Throws
+   */
   private LogFactory() {
     // disable construction
   }
 
+  /**
+   * @param null
+   * @Description: 根据java类来获取日志实例
+   * @Date: 2021/4/26 22:14
+   * @Author: HJ
+   * @Return
+   * @Throws
+   */
   public static Log getLog(Class<?> clazz) {
     return getLog(clazz.getName());
   }
 
+  /**
+   * @param null
+   * @Description: 根据类名来获取日志实例
+   * @Date: 2021/4/26 22:15
+   * @Author: HJ
+   * @Return
+   * @Throws
+   */
   public static Log getLog(String logger) {
     try {
       return logConstructor.newInstance(logger);
@@ -99,11 +128,14 @@ public final class LogFactory {
 
   private static void setImplementation(Class<? extends Log> implClass) {
     try {
+      // 获取日志实现类的构造方法
       Constructor<? extends Log> candidate = implClass.getConstructor(String.class);
+      //创建log对象
       Log log = candidate.newInstance(LogFactory.class.getName());
       if (log.isDebugEnabled()) {
         log.debug("Logging initialized using '" + implClass + "' adapter.");
       }
+      //创建成功，说明日志实现类可以使用，赋值给logconstructor来使用
       logConstructor = candidate;
     } catch (Throwable t) {
       throw new LogException("Error setting Log implementation.  Cause: " + t, t);

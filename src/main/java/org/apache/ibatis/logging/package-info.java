@@ -16,4 +16,9 @@
 /**
  * Base package for logging.
  */
+/**
+ * 1. Log:  定义日志接口、抽象出
+ * 2. LogException: -> PersistenceException -> IbatisException;
+ * 3. LogFactory: 日志工厂模式;
+ */
 package org.apache.ibatis.logging;
