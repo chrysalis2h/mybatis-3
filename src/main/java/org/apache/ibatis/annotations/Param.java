@@ -23,7 +23,8 @@ import java.lang.annotation.Target;
 
 /**
  * The annotation that specify the parameter name.
- *
+ * <br />
+ * 这个注解是为了明确参数的名字
  * <p>
  * <b>How to use:</b>
  *
@@ -33,7 +34,9 @@ import java.lang.annotation.Target;
  *   User selectById(&#064;Param("name") String value);
  * }
  * </pre>
+ * <p>
  *
+ * </p>
  * @author Clinton Begin
  */
 @Documented

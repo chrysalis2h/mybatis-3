@@ -1,32 +1,39 @@
 /**
- *    Copyright 2009-2019 the original author or authors.
- *
- *    Licensed under the Apache License, Version 2.0 (the "License");
- *    you may not use this file except in compliance with the License.
- *    You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *    Unless required by applicable law or agreed to in writing, software
- *    distributed under the License is distributed on an "AS IS" BASIS,
- *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *    See the License for the specific language governing permissions and
- *    limitations under the License.
+ * Copyright 2009-2019 the original author or authors.
+ * <p>
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * <p>
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * <p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.apache.ibatis.mapping;
 
-import javax.sql.DataSource;
-
 import org.apache.ibatis.transaction.TransactionFactory;
 
+import javax.sql.DataSource;
+
 /**
+ * DB 环境
+ *
  * @author Clinton Begin
  */
 public final class Environment {
+
+  // 环境编号
   private final String id;
+  // TransactionFactory对象
   private final TransactionFactory transactionFactory;
+  // 数据源配置
   private final DataSource dataSource;
 
+  // DB环境构造函数，所有的参数都不能为null
   public Environment(String id, TransactionFactory transactionFactory, DataSource dataSource) {
     if (id == null) {
       throw new IllegalArgumentException("Parameter 'id' must not be null");
@@ -42,6 +49,7 @@ public final class Environment {
     this.dataSource = dataSource;
   }
 
+  // 构造器
   public static class Builder {
     private final String id;
     private TransactionFactory transactionFactory;
